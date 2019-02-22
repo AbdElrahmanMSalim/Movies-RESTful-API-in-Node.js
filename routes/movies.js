@@ -2,26 +2,27 @@ const auth = require('../middleware/auth');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const {Movies, validateMovie} = require('../models/movies')
+const {Movies, validateMovies} = require('../models/movies')
 const {Genres} = require('../models/genres')
 
 
 router.get('/', async (req, res) => {
     const movies = await Movies.find().sort('name');
+
     res.send(movies);
 });
 
 router.get('/:id', async (req, res)=>{
     const movie = await Movies.findById(req.params.id);
+
     if(!movie) res.status(404).send("Not Found");
+
     res.send(movie);
 });
 
 router.post('/', auth, async (req, res)=> {
-    const {error} = validateMovie(req.body);
+    const {error} = validateMovies(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-
-
 
     const genre = await Genres.findById(req.body.genreID);
     if(!genre) return res.status(400).send('Invalid genre.');
@@ -42,7 +43,7 @@ router.post('/', auth, async (req, res)=> {
 });
 
 router.put('/:id', auth, async (req, res)=>{
-    const {error} = validateMovie(req.body);
+    const {error} = validateMovies(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     
     const genre = await Genres.findById(req.body.genreID);

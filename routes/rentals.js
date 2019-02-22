@@ -3,8 +3,8 @@ const express = require('express');
 const router = express.Router();
 const Fawn = require('fawn');
 const mongoose = require('mongoose');
-const {Movies, validateMovie} = require('../models/movies')
-const {Customers, validateCustomers} = require('../models/customers')
+const {Movies} = require('../models/movies')
+const {Customers} = require('../models/customers')
 const {Rentals, validateRentals} = require('../models/rentals')
 
 Fawn.init(mongoose);
@@ -16,7 +16,9 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res)=>{
     const rental = await Rentals.findById(req.params.id);
+
     if(!rental) res.status(404).send("Not Found");
+    
     res.send(rental);
 });
 
@@ -44,6 +46,7 @@ router.post('/', auth, async (req, res)=> {
             dailyRentalRate: movie.dailyRentalRate
         }, 
     });
+
     try{
         new Fawn.Task()
             .save('rentals', rental)
