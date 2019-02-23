@@ -1,9 +1,8 @@
 const request = require('supertest');
-const { Users } = require('../../models/users');
 const { Genres } = require('../../models/genres');
-let server;
 
-describe('auth middleware', () =>{    
+describe('auth middleware', () =>{  
+    let server;  
     beforeEach(() => { server = require('../../Vidly'); });
     afterEach(async () => { 
         await server.close(); 
