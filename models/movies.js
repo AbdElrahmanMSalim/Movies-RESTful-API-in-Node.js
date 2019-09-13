@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 const {genresSchema} = require('../models/genres');
 const joi = require('joi');
